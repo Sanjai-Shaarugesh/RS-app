@@ -1,0 +1,5 @@
+<gresources>
+    <gresource prefix="/org/gnome/sanjai">
+        <file preprocess="xml-stripblanks">ui/window.ui</file>
+    </gresource>
+</gresources>

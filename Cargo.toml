@@ -1,0 +1,13 @@
+[package]
+name = "sanjai"
+version = "0.1.0"
+edition = "2024"
+build = "build.rs"
+
+[dependencies]
+adw = { version = "0.7.2", package = "libadwaita", features = ["v1_5"] }
+gtk = { version = "0.9.7", package = "gtk4", features = ["v4_12"] }
+relm4 = "0.9.1"
+
+[build-dependencies]
+glib-build-tools = "0.20.0"
