@@ -1,0 +1,3 @@
+# .cargo/config.toml
+[env]
+GSETTINGS_SCHEMA_DIR = "data/schemas"

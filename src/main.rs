@@ -1,75 +1,37 @@
-use adw::{prelude::*,glib,Application,ApplicationWindow};
-use gtk::{gio, Button, Orientation};
-mod custom_button;
+mod collection_object;
+mod task_object;
+mod utils;
+mod window;
 
-use gtk::Box;
+use adw::prelude::*;
+use gtk::{gio, glib};
+use window::Window;
 
-use custom_button::CustomButton;
+const APP_ID: &str = "org.gtk_rs.Todo8";
 
-const APP_ID:&str = "com.sanjai.org";
+fn main() -> glib::ExitCode {
+    gio::resources_register_include!("todo_8.gresource")
+        .expect("Failed to register resources.");
 
-fn main() -> glib::ExitCode{
-  gio::resources_register_include!("sanjai.gresource")
-          .expect("Failed to register resources.");
+    // Create a new application
+    let app = adw::Application::builder().application_id(APP_ID).build();
 
-  let app = Application::builder()
-    .application_id(APP_ID)
-    .build();
+    // Connect to signals
+    app.connect_startup(setup_shortcuts);
+    app.connect_activate(build_ui);
 
-  app.connect_activate(build_ui);
+    // Run the application
+    app.run()
+}
 
-  app.run()
+fn setup_shortcuts(app: &adw::Application) {
+    app.set_accels_for_action("win.filter('All')", &["<Ctrl>a"]);
+    app.set_accels_for_action("win.filter('Open')", &["<Ctrl>o"]);
+    app.set_accels_for_action("win.filter('Done')", &["<Ctrl>d"]);
 }
 
 fn build_ui(app: &adw::Application) {
-
-  let button = Button::builder()
-    .label("click me")
-    .margin_top(12)
-    .margin_bottom(12)
-    .margin_start(12)
-    .margin_end(12)
-    .build();
-
-  button.connect_clicked(|button|{
-    button.set_label("you clicked me ");
-  });
-
-  let button2 =  CustomButton::with_label("Press me!");
-     button.set_margin_top(12);
-     button.set_margin_bottom(12);
-     button.set_margin_start(12);
-     button.set_margin_end(12);
-
-
-
-
-  let gtk_box = gtk::Box::builder()
-    .orientation(Orientation::Vertical)
-
-    .spacing(10)
-    // .margin_top(12)
-    // .margin_end(12)
-    // .margin_start(12)
-    // .margin_end(12)
-    .build();
-
-  gtk_box.append(&adw::HeaderBar::new());
-  gtk_box.append(&button);
-  gtk_box.append(&button2);
-  //
-  // let content = Box::new(Orientation::Vertical,0);
-  //   content.append(&adw::HeaderBar::new());
-  //   content.append(&button2);
-  //   content.append(&button);
-
-
-  let window = ApplicationWindow::builder()
-    .application(app)
-    .content(&gtk_box)
-    .title("sanjai")
-    .build();
-
-  window.present();
-
+    // Create a new custom window and present it
+    let window = Window::new(app);
+    window.present();
 }
